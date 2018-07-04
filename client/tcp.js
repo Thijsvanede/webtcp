@@ -1,11 +1,14 @@
-function TCP(address){
+function TCP(address, callback){
     /** TCP attributes. **/
     /* Connection to WebSocket. */
     this.socket = io.connect(address);
     /* Current state of TCP. */
     this.state  = 'disconnected';
+    /* Set callback function */
+    this.callback = callback;
     /* Set self reference. */
     var self    = this;
+
 
     /** Socket sending methods. **/
     /* Setup a connection to host:port. */
@@ -50,6 +53,7 @@ function TCP(address){
         this.state = 'disconnected';
     };
 
+
     /** Actions on socket events. **/
     /* When a tcp_ack is received, transition to connected state. */
     this.socket.on('tcp_ack', function(){
@@ -59,5 +63,10 @@ function TCP(address){
     /* When a connection_exit is received, transition to disconnected state. */
     this.socket.on('connection_exit', function(){
         self.state_disconnect();
+    });
+    
+    /* When a data is received, pass it through to the callback function. */
+    this.socket.on('data', function(data){
+        self.callback(data);
     });
 }
