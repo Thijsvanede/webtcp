@@ -18,12 +18,14 @@ io.on('connection', function(socket){
     var client    = new net.Socket();
     var connected = false;
     
+    
     /* Create actions for given socket events. */
     /* On tcp event, connect socket to given host:port*/
     socket.on('tcp', function(data){
         client.connect(data.port, data.host, function(){
             socket.emit('tcp_ack');
             connected = true;
+            console.log('Connection established!');
         });
     });
 
@@ -41,5 +43,19 @@ io.on('connection', function(socket){
             client.write(data);
         else
             socket.emit('error', 'Not connected to any client');
+    });
+    
+    
+    /** Create actions for given TCP client events. **/
+    /* On close event, send exit to WebClient and create new Socket. */
+    client.on('close', function(){
+        connected = false;
+        socket.emit('connection_exit');
+        client = new net.Socket();
+    });
+    
+    /* On data event, relay data to WebClient. */
+    client.on('data', function(data){
+        socket.emit('data', data);
     });
 });
