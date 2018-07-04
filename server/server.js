@@ -13,6 +13,7 @@ var server = app.listen(port, function(){
 var io = socket(server);
 
 io.on('connection', function(socket){
+    console.log('Socket connected!');
     /* Create TCP client for a connection. */
     var client    = new net.Socket();
     var connected = false;
