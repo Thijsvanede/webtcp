@@ -69,4 +69,9 @@ function TCP(address, callback){
     this.socket.on('data', function(data){
         self.callback(data);
     });
+    
+    /* On error, log the error. */
+    this.socket.on('error', function(data){
+        console.log(data);
+    });
 }
