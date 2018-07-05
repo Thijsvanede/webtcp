@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Client side test page.</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+        <script src="../client/tcp.js"></script>
+    </head>
+    <body>
+        <script>
+            var tcp = new TCP('ws://localhost:4000', function(data){
+                decoder = new TextDecoder('utf-8');
+                console.log(decoder.decode(data));
+            });
+        </script>
+    </body>
+</html>
