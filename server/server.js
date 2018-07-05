@@ -25,7 +25,7 @@ io.on('connection', function(socket){
         client.connect(data.port, data.host, function(){
             socket.emit('tcp_ack');
             connected = true;
-            console.log('Connection established!');
+            console.log('Connection ', data.host, ':', data.port, ' established!');
         });
     });
 
@@ -34,7 +34,7 @@ io.on('connection', function(socket){
         connected = false;
         client.end();
         socket.emit('connection_exit');
-        client = new net.Socket();
+        //client = new net.Socket();
     });
 
     /* On send, send data over socket if connected. */
